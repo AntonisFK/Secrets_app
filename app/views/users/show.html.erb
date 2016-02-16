@@ -1,0 +1,41 @@
+<h1>DashBoard</h1>
+
+<p><%= @user.name %> </p>
+<p>Your secret:</p>
+<% @user.secrets.each do |t| %>
+	<%= t.content %> <p> <%= t.likes.count %> likes </p>
+	<% if current_user.secrets_liked.exclude?(t) %> 
+	 <form action='/likes' method='post'>
+    	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    	<input type='hidden' name='secret_id' value='<%= t.id %>'>
+    	<input type='submit' value='Like'>
+  	</form>
+	
+	<%else%> 
+	<form action = "/likes/<%=t.id%>  " method='post'>
+		<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token%>">
+		<input name="_method" type="hidden" value="delete">
+		<input type="hidden" name= 'secret_id' value = "<%=t.id%>">
+		<input type="submit" value= "Unlike">
+	</form> 
+	<%end%>
+	<form action = "/secrets/<%= t.id %>" method='post'>
+		<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token%>">
+		<input name="_method" type="hidden" value="delete">
+		<input type="hidden" name= 'secret[user_id]' value= "<%= t.id %>">
+		<input type="submit" value= "Delete">
+	</form> 
+<% end %> 
+<br>
+
+
+
+<%= form_for @secret, :url => '/secrets' do |f| %>
+<%= f.label :content, "New Secret" %>
+<%= f.text_field :content %>
+
+<%=f.submit "Create Secret" %>
+<%end%>
+
+
+<a href="/users/<%=@user.id%>/edit">Edit Profile</a>

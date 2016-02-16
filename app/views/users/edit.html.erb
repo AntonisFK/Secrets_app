@@ -1,0 +1,26 @@
+<% provide(:title, 'Edit user') %>
+
+<h1>Edit  </h1>
+<div>
+	<%=form_for @user, :url => {:action =>  "update"} do |f| %>
+	
+	<%= f.label :name %>
+	<%= f.text_field :name %>
+	
+	<%=f.label :email  %>
+	<%= f.text_field :email %>
+	
+	<%=f.submit "Update"  %>
+	<%end  %>
+ 
+
+ <%= button_to "Delete Account", @user, method: :delete %>
+
+	<% if flash[:error] %>
+		<% flash[:error].each do |t| %>
+		<p><%= t %></p>
+		<% end %>
+	<% end %>
+	
+
+</div>
